@@ -6,10 +6,10 @@
 
 int main() {
 
-	/* next going to make a infinite while loop and accept different inputs for different moods:
-		example: default stuff - mail and piazza
-					1 - for leisure
-					2 - for other stuffs
+	/* made an in finite while loop and accept different inputs for different moods:
+		example: 0 - default stuff - mail and piazza
+				 1 - for leisure
+		only two inputs so far!
 	*/
 
 	/* file pointer intialization */
@@ -48,7 +48,7 @@ int main() {
 	/* infinite while loop */
 	while(1) {
 		
-		/* probably a better way to do this, but wait until user input is 0 */
+		/* probably a better way to do this, but wait until user input is 0 or 1 */
 		if (intialization) {
 			printf("Opened initial websites.\n");
 			intialization = 0; 
@@ -74,6 +74,7 @@ int main() {
 	}
 
 	fclose(fp_default);
+	fclose(fp_leisure);
 
 	return 0;
 }
