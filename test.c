@@ -1,59 +1,79 @@
 /* turns out have to make .exe, so going to make it in c */
+/* when run, need to run test.exe !! */
 
 # include <windows.h>
 # include <stdio.h>
 
 int main() {
-	
-	/* when run, need to run test.exe !! */
 
-	/* after add to startup folder, works!! */
 	/* next going to make a infinite while loop and accept different inputs for different moods:
 		example: default stuff - mail and piazza
 					1 - for leisure
 					2 - for other stuffs
 	*/
 
-	FILE *fp;
+	/* file pointer intialization */
+	FILE *fp_default, *fp_leisure, *fp_chosen;
+	FILE *pointers[2]; /* to hold our file pointers */
+
+	/* modes and int intialization */
 	char buf[1000];
-	char user_web_choices[10];
 	char *text_mode = "r";
-	char *text_default = "default.txt";
 	char *shell_command = "open";
-		/* SW_SHOWNORMAL = 1 */
-	int shell_mode = SW_SHOWNORMAL;
+	int shell_mode = SW_SHOWNORMAL; 
+	/* SW_SHOWNORMAL = 1 */
 	int user_input;
+	int intialization = 1;
+
+	/* our own website text files */
+	char *text_default = "default.txt";
+	char *text_leisure = "leisure.txt";
 
 	/* open file  and error check */
-	fp = fopen(text_default, text_mode);
-	if (fp == NULL) {
-		printf("Failed to open file");
+	fp_default = fopen(text_default, text_mode);
+	if (fp_default == NULL) {
+		printf("Failed to open default file");
+		exit(1);
+	}
+	fp_leisure = fopen(text_leisure, text_mode);
+	if (fp_leisure == NULL) {
+		printf("Failed to open leisure file");
 		exit(1);
 	}
 
+	/* fill our array of file pointers */
+	pointers[0] = fp_default;
+	pointers[1] = fp_leisure;
+
 	/* infinite while loop */
 	while(1) {
-		rewind(fp);
-
-		printf("Defaulting...Press 0 to continue\n");
 		
 		/* probably a better way to do this, but wait until user input is 0 */
-		while(1) {
-			scanf("%d", &user_input);
-			if (user_input == 0) {
-				memcpy(user_web_choices, text_default, sizeof(text_default));
-				break;
+		if (intialization) {
+			printf("Opened initial websites.\n");
+			intialization = 0; 
+			fp_chosen = pointers[0];
+		} else {
+			rewind(fp_chosen);
+			printf("Awaiting next choice\n");
+			printf("Press 0 for default, 1 for leisure websites.\n");
+			while(1) {
+				scanf("%d", &user_input);
+				if (user_input == 0 || user_input == 1) {
+					fp_chosen = pointers[user_input];
+					break;
+				}
 			}
 		}	
 
 		/* open up all the default websites */
-		while(fgets(buf, 1000, fp)!= NULL) {
+		while(fgets(buf, 1000, fp_chosen)!= NULL) {
 			ShellExecute(NULL, shell_command, buf, NULL, NULL, shell_mode);
 		}
 		
 	}
 
-	fclose(fp);
+	fclose(fp_default);
 
 	return 0;
 }

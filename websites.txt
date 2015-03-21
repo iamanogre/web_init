@@ -1,4 +1,4 @@
 http://google.com
-http://www.microsoft.com
 https://msdn.microsoft.com/en-us/library/windows/desktop/bb762153(v=vs.85).aspx
 http://www.tech-recipes.com/rx/28206/windows-8-how-to-add-applications-startup-folder/
+https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/
